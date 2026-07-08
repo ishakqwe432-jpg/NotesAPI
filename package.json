@@ -1,0 +1,23 @@
+{
+  "name": "notesapi",
+  "version": "1.0.0",
+  "description": "about : it created to demonstrate file oprations in node js and conversion from json string to node js Object",
+  "main": "server.js",
+  "scripts": {
+"start": "node --env-file=.env server.js",
+   "dev": "node --env-file=.env --watch server.js"
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ishakqwe432-jpg/NotesAPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ishakqwe432-jpg/NotesAPI/issues"
+  },
+  "homepage": "https://github.com/ishakqwe432-jpg/NotesAPI#readme"
+}

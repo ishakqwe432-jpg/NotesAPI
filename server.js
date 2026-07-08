@@ -1,11 +1,17 @@
 const express=require("express");
-//const cors=require("cors");
-const {getNotes,createNotes}=require("./src/NoteController");
+const connectDB=require("./config/db");
+//  Router imports only 
+   const CreateNotes=require("./routes/NoteRoutes");
+// Middleware Imports
+const isValid=require("./MiddleWares/isValid");
+   const LoggerMid=require("./MiddleWares/Logger");
 const app=express();
-//app.use(cors());
 app.use(express.json());
-app.post("/api/Create",createNotes);
-app.get("/api/showData",getNotes)
-app.listen(3004,(req,res)=>{
+ // endpoint of APIs
+
+  app.use("/api",LoggerMid,isValid,CreateNotes);
+connectDB();
+ console.log(3004);
+app.listen(3004,()=>{
 console.log("server has started running ");
 });

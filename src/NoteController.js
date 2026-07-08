@@ -1,3 +1,5 @@
+
+  //its a isolated file which only kept for refrenced
 const fs=require("fs");
 function notes(){
 const data=fs.readFileSync("./data.json","utf-8");
