@@ -11,4 +11,10 @@
  } else{
   res.status(400).json({message:"Bad Request"});
 }}
-module.exports=CreateNote;
+  async function GetNotes(req,res){
+   const data=await Notes.find();
+
+ return res.status(200).json({message:"succesfull",data:data});
+
+}
+module.exports={CreateNote,GetNotes};
