@@ -29,7 +29,7 @@ const payload = {
         payload,
         process.env.JWT_SECRET,
         {
-            expiresIn: "1m"
+            expiresIn: "15m"
         }
     );
 const refreshToken = jwt.sign(
@@ -39,6 +39,9 @@ const refreshToken = jwt.sign(
         expiresIn: "7d"
     }
 );
+ user.refreshToken=refreshToken;
+  await user.save();
+
   return res.status(200).json({
     message: "Login successful",
     accessToken,
@@ -63,6 +66,16 @@ async function refresh(req, res) {
             refreshToken,
             process.env.REFRESH_SECRET
         );
+const user=await User.findById(decoded.userId);
+if (!user) {
+    return res.status(401).json({
+        message: "User not found"
+    });
+}
+
+if (user.refreshToken!==refreshToken){
+return res.status(401).json({message:"Invalide refresh Token"});
+}
 
         const accessToken = jwt.sign(
             {
@@ -75,13 +88,25 @@ async function refresh(req, res) {
                 expiresIn: "15m"
             }
         );
+const payload = {
+    userId: user._id,
+    username: user.username,
+    role: user.role
+};
+const newRefreshToken=jwt.sign(
+ payload,
+ process.env.REFRESH_SECRET,{ expiresIn:"7d"});
+user.refreshToken=newRefreshToken;
+await user.save();
 
         return res.status(200).json({
             message: "New access token generated",
-            accessToken
+            accessToken,
+refreshToken:newRefreshToken
         });
 
     } catch (error) {
+console.log(error.message);
         return res.status(401).json({
             message: "Invalid or expired refresh token"
         });

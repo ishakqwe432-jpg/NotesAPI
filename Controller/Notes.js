@@ -1,20 +1,45 @@
- const Notes=require("../models/Notes");
-  async function CreateNote(req,res){
-   const {title,content}=req.body;
- if (title  || content){
+const Notes = require("../models/Notes");
 
-  const newData= await Notes.create( {
-  title,
- content});
-  res.status(200).json({ mesaage:"succesFull",
-    data:newData});
- } else{
-  res.status(400).json({message:"Bad Request"});
-}}
-  async function GetNotes(req,res){
-   const data=await Notes.find();
+async function CreateNote(req, res) {
+    try {
+        const { title, content } = req.body;
 
- return res.status(200).json({message:"succesfull",data:data});
+        const newData = await Notes.create({
+            title,
+            content
+        });
 
+        return res.status(201).json({
+            message: "Successful",
+            data: newData
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
 }
-module.exports={CreateNote,GetNotes};
+
+async function GetNotes(req, res) {
+    try {
+        const data = await Notes.find();
+
+        return res.status(200).json({
+            message: "Successful",
+            data
+        });
+    } catch (error) {
+        console.error(error);
+
+        return res.status(500).json({
+            message: "Internal Server Error"
+        });
+    }
+}
+
+module.exports = {
+    CreateNote,
+    GetNotes
+};
