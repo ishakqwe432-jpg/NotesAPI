@@ -1,7 +1,8 @@
 const User=require("../models/user");
 const  bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
- async function signUp(req,res){
+ async function signUp(req,res,next){
+try{
   const {name,username,email,password}=req.body;
  const hashedPassword= await bcrypt.hash(password,10); 
 const data=await User.create({
@@ -11,8 +12,13 @@ const data=await User.create({
  res.status(201).json({message:"Done",data:data});
 console.log(data)
 console.log(req.body);
+ }catch(error){
+  next(error);
+  }
+
 };
- async function login(req,res){
+ async function login(req,res,next){
+try{
   const {username,password}=req.body;
   const user=await User.findOne({username});
 console.log(user);
@@ -51,6 +57,10 @@ const refreshToken = jwt.sign(
 else{
  res.status(401).json({message:"unauthorized"});
 }
+
+   }catch(error){
+   next(error);
+ }
 }
 async function refresh(req, res) {
     const { refreshToken } = req.body;
@@ -112,6 +122,21 @@ console.log(error.message);
         });
     }
 }
+ async function logOut(req,res,next){
+try{
+ const id=req.user.userId
 
+const user= await User.findById(id);
+if (!user){
+ return res.status(404).json({message:"user not Found"});
+}
+  user.refreshToken=null
+ await user.save()
+   return res.status(200).json({message:"sucessfully Log Out"});
+  } catch(error){
+   next(error);
+
+  }
+}
 module.exports={
- signUp,login,refresh}
+ signUp,login,refresh,logOut}

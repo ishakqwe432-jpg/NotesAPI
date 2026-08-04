@@ -10,10 +10,11 @@ function authenticator(req,res,next){
  
    req.user=decoded;
    next();
+ console.log("hey i ran successfully i am a first li,ne of defence auth->");
 }
+
  catch(error){
-  console.log(error.message);
-return res.status(401).json({message:"unauthorized"});
+return res.status(401).json({message:"token is expired  please login"});
   }
   }
   module.exports=authenticator; 

@@ -1,6 +1,6 @@
 const Notes = require("../models/Notes");
 
-async function CreateNote(req, res) {
+async function CreateNote(req, res,next) {
     try {
         const { title, content } = req.body;
 
@@ -14,15 +14,11 @@ async function CreateNote(req, res) {
             data: newData
         });
     } catch (error) {
-        console.error(error);
-
-        return res.status(500).json({
-            message: "Internal Server Error"
-        });
+   next(error);
     }
 }
 
-async function GetNotes(req, res) {
+async function GetNotes(req, res,next) {
     try {
         const data = await Notes.find();
 
@@ -31,11 +27,8 @@ async function GetNotes(req, res) {
             data
         });
     } catch (error) {
-        console.error(error);
 
-        return res.status(500).json({
-            message: "Internal Server Error"
-        });
+   next(error);
     }
 }
 

@@ -10,9 +10,7 @@ console.log(CreateNotes);
 const app=express();
 app.use(express.json());
  // endpoint of APIs
-  app.use("/api",(req,res,next)=>{console.log("create note chain"); next()},CreateNotes);
 app.use("/api",CreateNotes);
-app.use("/api",(req,res,next)=>{console.log("chain of auth"); next()},auth);
 app.use("/api",auth);
 connectDB();
  console.log(3004);
