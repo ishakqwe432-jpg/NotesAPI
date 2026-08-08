@@ -1,20 +1,22 @@
 const User=require("../models/user");
 const  bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
+ const {ConflictError}=require("../utils/customErrorClass");
+ const succesResponse=require("../utils/succesResponse");
  async function signUp(req,res,next){
-try{
   const {name,username,email,password}=req.body;
+  const existingUser= await  User.findOne({ $or:[{username},{email}]});
+if ( existingUser){
+  throw new ConflictError("User allready exist");
+  }
  const hashedPassword= await bcrypt.hash(password,10); 
 const data=await User.create({
   name,
   username,
   email,password:hashedPassword});
- res.status(201).json({message:"Done",data:data});
+  return succesResponse(res,201,"succsefully registerd",data);
 console.log(data)
 console.log(req.body);
- }catch(error){
-  next(error);
-  }
 
 };
  async function login(req,res,next){

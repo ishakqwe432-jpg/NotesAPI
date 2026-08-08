@@ -1,3 +1,4 @@
+const {ValidationError}=require("../utils/customErrorClass");
 function validator(schema){
 return function(req,res,next){
 try {
@@ -8,11 +9,11 @@ console.log(ke);
 console.log(expected[ke]);
 if ( actual[ke]===null || actual[ke]===undefined  ||  ( typeof actual[ke] ==="string"  && actual[ke].trim()===""))
   {
-return res.status(400).json({message: `${ke} data is missing`});
+throw new ValidationError(`${ke} data is missing`);
    }
 
 if ( expected[ke].name.toLowerCase()!== typeof actual[ke]){
-return  res.status(400).json({message:` ${ke} Invalid Data type` })
+  throw new ValidationError(` ${ke} Invalid Data type` )
    }
 
 

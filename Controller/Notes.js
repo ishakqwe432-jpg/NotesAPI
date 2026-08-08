@@ -1,8 +1,8 @@
 const Notes = require("../models/Notes");
 
 async function CreateNote(req, res,next) {
-    try {
-        const { title, content } = req.body;
+
+const { title, content } = req.body;
 
         const newData = await Notes.create({
             title,
@@ -13,9 +13,6 @@ async function CreateNote(req, res,next) {
             message: "Successful",
             data: newData
         });
-    } catch (error) {
-   next(error);
-    }
 }
 
 async function GetNotes(req, res,next) {

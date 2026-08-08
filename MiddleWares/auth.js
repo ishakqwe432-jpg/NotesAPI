@@ -1,8 +1,8 @@
   const jwt=require("jsonwebtoken");
- 
+const {UnauthorizedError}=require("../utils/customErrorClass"); 
 function authenticator(req,res,next){
   if (!req.headers.authorization){
- return res.status(401).json({message:"unauthorised"});
+   throw new UnauthorizedError("Header is missing .. ");
 } 
  const token=req.headers.authorization.split(" ")[1];
  try{
