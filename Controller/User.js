@@ -5,6 +5,7 @@ const jwt=require("jsonwebtoken");
  const succesResponse=require("../utils/succesResponse");
  async function signUp(req,res,next){
   const {name,username,email,password}=req.body;
+// added saftey check  to avoid duplicate insertions
   const existingUser= await  User.findOne({ $or:[{username},{email}]});
 if ( existingUser){
   throw new ConflictError("User allready exist");
